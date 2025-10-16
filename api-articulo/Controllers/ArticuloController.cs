@@ -44,9 +44,19 @@ namespace api_articulo.Controllers
         }
 
         // PUT: api/Articulo/5
-        public void Put(int id, [FromBody] Articulo articulo)
+        public void Put(int id, [FromBody] ArticuloDTO articuloDTO)
         {
+            ArticuloNegocio negocio = new ArticuloNegocio();
+            Articulo nuevoArticulo = new Articulo();
+            nuevoArticulo.Codigo = articuloDTO.Codigo;
+            nuevoArticulo.Nombre = articuloDTO.Nombre;
+            nuevoArticulo.Descripcion = articuloDTO.Descripcion;
+            nuevoArticulo.IdMarca = new Marca { Id = articuloDTO.IdMarca };
+            nuevoArticulo.IdCategoria = new Categoria { Id = articuloDTO.IdCategoria };
+            nuevoArticulo.Precio = articuloDTO.Precio;
+            nuevoArticulo.Id = id;
 
+            negocio.Modificar(nuevoArticulo);
         }
 
         // DELETE: api/Articulo/5
