@@ -71,9 +71,28 @@ namespace negocio
 
             try
             {
-                datos.setearConsulta("Insert into ARTICULOS (Codigo, Nombre, Descripcion, Precio, IdMarca, IdCategoria) " + 
-                    "values('" + nuevo.Codigo + "'" + ", '" + nuevo.Nombre + "'" + ", '" + nuevo.Descripcion + "'" + ", " + nuevo.Precio + "" + ", " + nuevo.IdMarca.Id + "" + ", " + nuevo.IdCategoria.Id + ")" );
+                datos.setearConsulta("Insert into ARTICULOS " +
+                    "(Codigo, Nombre, Descripcion, Precio, IdMarca, IdCategoria) " +
+                    "values(@Cod, @Nom, @Desc, @Pre, @IdM, @Idc)");
+                datos.setearParametro("@Cod", nuevo.Codigo);
+                datos.setearParametro("@Nom", nuevo.Nombre);
+                datos.setearParametro("@Desc", nuevo.Descripcion);
+                datos.setearParametro("@Pre", nuevo.Precio);
+                datos.setearParametro("@IdM", nuevo.IdMarca.Id);
+                datos.setearParametro("@Idc", nuevo.IdCategoria.Id);
                 datos.ejecutarAccion();
+
+                /*
+                datos.setearConsulta("Insert into ARTICULOS (Codigo, Nombre, Descripcion, Precio, IdMarca, IdCategoria) " + 
+                    "values('" + nuevo.Codigo + "'" 
+                    + ", '" + nuevo.Nombre + "'" 
+                    + ", '" + nuevo.Descripcion + "'" 
+                    + ", " + nuevo.Precio + "" + ", " 
+                    + nuevo.IdMarca.Id + "" + ", " 
+                    + nuevo.IdCategoria.Id + ")" );
+                datos.ejecutarAccion();
+                */
+
             }
             catch (Exception ex)
             {
