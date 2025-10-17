@@ -13,6 +13,8 @@ namespace api_articulo.Controllers
     public class ArticuloController : ApiController
     {
         // GET: api/Articulo
+        [HttpGet]
+        [Route("api/Articulo")]
         public IEnumerable<Articulo> Get()
 
         {
@@ -21,12 +23,33 @@ namespace api_articulo.Controllers
         }
 
         // GET: api/Articulo/5
-        public Articulo Get(int id)
+        [HttpGet]
+        [Route("api/Articulo/{id}")]
+        public HttpResponseMessage Get(int id)
         {
-            ArticuloNegocio articulo = new ArticuloNegocio();
-            List<Articulo> lista = articulo.Listar();
 
-            return lista.Find (x=> x.Id == id);
+            try
+            {
+                if (id <= 0)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "El ID debe ser mayor que 0.");
+                }
+
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                List<Articulo> lista = negocio.Listar();
+                Articulo articulo = lista.Find(x => x.Id == id);
+
+                if (articulo == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, $"No se encontro un artículo con ID {id}.");
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, articulo);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error al obtener el articulo " + ex.Message);
+            }
         }
 
         // POST: api/Articulo
